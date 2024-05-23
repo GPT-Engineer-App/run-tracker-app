@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   VStack,
@@ -24,9 +24,18 @@ const Index = () => {
   const [feelings, setFeelings] = useState("");
   const [advice, setAdvice] = useState("");
 
+  useEffect(() => {
+    const storedRuns = localStorage.getItem("runs");
+    if (storedRuns) {
+      setRuns(JSON.parse(storedRuns));
+    }
+  }, []);
+
   const handleAddRun = () => {
     const newRun = { time, distance, feelings };
-    setRuns([...runs, newRun]);
+    const updatedRuns = [...runs, newRun];
+    setRuns(updatedRuns);
+    localStorage.setItem("runs", JSON.stringify(updatedRuns));
     setTime("");
     setDistance("");
     setFeelings("");
