@@ -13,8 +13,7 @@ import {
   Heading,
   FormControl,
   FormLabel,
-  Alert,
-  AlertIcon,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 const Index = () => {
@@ -22,7 +21,6 @@ const Index = () => {
   const [time, setTime] = useState("");
   const [distance, setDistance] = useState("");
   const [feelings, setFeelings] = useState("");
-  const [advice, setAdvice] = useState("");
 
   const handleAddRun = () => {
     const newRun = { time, distance, feelings };
@@ -32,31 +30,11 @@ const Index = () => {
     setFeelings("");
   };
 
-  const calculateAdvice = () => {
-    if (runs.length === 0) {
-      setAdvice("Please add some runs to get training advice.");
-      return;
-    }
-
-    let totalDistance = 0;
-    runs.forEach(run => {
-      totalDistance += parseFloat(run.distance);
-    });
-
-    const averageDistance = totalDistance / runs.length;
-
-    let adviceMessage = "Based on your tracked runs, here are some training tips:\n";
-    adviceMessage += `1. Your average run distance is ${averageDistance.toFixed(2)} km. To train for longer runs, gradually increase your distance by 10% each week.\n`;
-    adviceMessage += "2. Incorporate rest days into your training schedule to allow your body to recover.\n";
-    adviceMessage += "3. Include strength training exercises to build endurance and prevent injuries.\n";
-    adviceMessage += "4. Stay hydrated and maintain a balanced diet to support your training.\n";
-    adviceMessage += "5. Listen to your body and adjust your training intensity as needed.";
-
-    setAdvice(adviceMessage);
-  };
+  const bg = useColorModeValue("white", "gray.700");
+  const color = useColorModeValue("black", "white");
 
   return (
-    <Container centerContent maxW="container.md" py={10}>
+    <Container centerContent maxW="container.md" py={10} bg={bg} color={color}>
       <VStack spacing={6} width="100%">
         <Heading as="h1" size="xl" mb={6}>
           Running Tracker
@@ -103,15 +81,6 @@ const Index = () => {
             ))}
           </List>
         </Box>
-        <Button colorScheme="green" onClick={calculateAdvice}>
-          Get Training Advice
-        </Button>
-        {advice && (
-          <Alert status="info" mt={4}>
-            <AlertIcon />
-            <Text whiteSpace="pre-wrap">{advice}</Text>
-          </Alert>
-        )}
       </VStack>
     </Container>
   );
